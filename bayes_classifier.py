@@ -57,15 +57,17 @@ for i in range(len(meta_data[0][1])):
         else:
             classifier[i][j] = continuous_prob_dist(category, j)
 
-# pp.pprint(classifier, width=2)
+pp.pprint(classifier, width=2)
 
 test_data = [[4.7, 0, 9, 1],
              [  3, 0, 9, 1],
              [  3, 1, 8, 3]]
 
 for sample in test_data:
+    print
     prob = {0: 1, 1: 1, 2: 1}
     for cat in meta_data[0][1]:
+        prob[cat] *= classifier[cat]['p']
         for param in range(1, len(meta_data)):
             if meta_data[param][0] == 'discrete':
                 prob[cat] *= classifier[cat][param][sample[param-1]]
@@ -74,4 +76,3 @@ for sample in test_data:
     s = sum(prob.values())
     for key in prob:
         print('{}: {:.3f}%'.format(key, float(prob[key]/s)*100))
-    print
